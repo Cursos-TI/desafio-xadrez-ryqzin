@@ -2,42 +2,70 @@
 
 #include <stdio.h>
 
+// Função recursiva para a Torre (direita)
+void moverTorre(int atual, int max) {
+    if (atual > max) return;
+    printf("Casa %d: Direita\n", atual);
+    moverTorre(atual + 1, max);
+}
+
+// Função recursiva para a Rainha (esquerda)
+void moverRainha(int atual, int max) {
+    if (atual > max) return;
+    printf("Casa %d: Esquerda\n", atual);
+    moverRainha(atual + 1, max);
+}
+
+// Função recursiva para o Bispo (diagonal para cima e à direita)
+void moverBispoRec(int atual, int max) {
+    if (atual > max) return;
+    printf("Casa %d: Cima, Direita\n", atual);
+    moverBispoRec(atual + 1, max);
+}
+
+// Bispo com loops aninhados (vertical e horizontal)
+void moverBispoLoops(int casas) {
+    int passo = 1;
+    for (int i = 1; i <= casas; i++) { // vertical (cima)
+        for (int j = 1; j <= 1; j++) { // horizontal (direita, só 1 vez por passo)
+            printf("Casa %d: Cima, Direita\n", passo++);
+        }
+    }
+}
+
 int main() {
-    // Torre: 5 casas para a direita (for)
+    // Torre: recursivo
     printf("Movimento da Torre:\n");
-    for (int i = 1; i <= 5; i++) {
-        printf("Casa %d: Direita\n", i);
-    }
+    moverTorre(1, 5);
 
-    // Bispo: 5 casas na diagonal para cima e à direita (while)
-    printf("\nMovimento do Bispo:\n");
-    int j = 1;
-    while (j <= 5) {
-        printf("Casa %d: Cima, Direita\n", j);
-        j++;
-    }
+    // Bispo: recursivo
+    printf("\nMovimento do Bispo (recursivo):\n");
+    moverBispoRec(1, 5);
 
-    // Rainha: 8 casas para a esquerda (do-while)
+    // Bispo: loops aninhados
+    printf("\nMovimento do Bispo (loops aninhados):\n");
+    moverBispoLoops(5);
+
+    // Rainha: recursivo
     printf("\nMovimento da Rainha:\n");
-    int k = 1;
-    do {
-        printf("Casa %d: Esquerda\n", k);
-        k++;
-    } while (k <= 8);
+    moverRainha(1, 8);
 
-
-
-    // Cavalo: 2 para baixo e 1 para a esquerda (for + while)
+    // Cavalo: 2 para cima e 1 para a direita, usando loops aninhados e controle de fluxo
     printf("\nMovimento do Cavalo:\n");
-    int movimentos = 1; // Quantas vezes o cavalo vai repetir o movimento
+    int movimentos = 3; // Quantas vezes o cavalo vai repetir o movimento
     int passo = 1;
     for (int i = 0; i < movimentos; i++) {
-        int j = 0;
-        while (j < 2) { // Duas casas para baixo
-            printf("Casa %d: Baixo\n", passo++);
-            j++;
+        int sub = 0;
+        for (int j = 0; j < 3; j++) {
+            if (j < 2) {
+                printf("Casa %d: Cima\n", passo++);
+                continue; // Vai para o próximo j
+            }
+            if (j == 2) {
+                printf("Casa %d: Direita\n", passo++);
+                break; // Sai do loop interno após o movimento para a direita
+            }
         }
-        printf("Casa %d: Esquerda\n", passo++);
     }
 
     return 0;
